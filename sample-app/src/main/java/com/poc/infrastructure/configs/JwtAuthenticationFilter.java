@@ -2,6 +2,7 @@ package com.poc.infrastructure.configs;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -15,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.poc.domain.services.UserService;
@@ -32,23 +32,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	
 	private final AuthenticationResponseHandler authenticationResponseHandler;
 	
-	//private final String jwtSecret;
-
 	@Value("${spring.application.name}")
     private String apiName;
-	
-//    private final String apiName;
-//
-//    private final long jwtExpiration;
-    
-    public JwtAuthenticationFilter(UserService userService, AuthenticationManager authenticationManager, AuthenticationResponseHandler authenticationResponseHandler) {
+	    
+    public JwtAuthenticationFilter(UserService userService, AuthenticationManager authenticationManager, 
+    		AuthenticationResponseHandler authenticationResponseHandler) {
         this.userService = userService;
     	this.authenticationManager = authenticationManager;
     	this.authenticationResponseHandler = authenticationResponseHandler;
-        //this.jwtSecret = jwtSecret;
-        //this.apiName = apiName;
-        //this.jwtExpiration = jwtExpiration;
-        //this.utils = utils;
         setFilterProcessesUrl("/authenticate");
     }
 
@@ -60,12 +51,32 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) {
-        var user = (User) authentication.getPrincipal();
-        var roles = user.getAuthorities()
-                                    .stream()
-                                    .map(GrantedAuthority::getAuthority)
-                                    .collect(Collectors.joining(","));
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
+    		FilterChain filterChain, Authentication authentication) {
+    	var deviceTypeHeader = request.getHeader("Device-Type");    	
+    	if (deviceTypeHeader == null) throw new RuntimeException("deviceTypeHeader undefined");
+    	
+    	var user = (User) authentication.getPrincipal();
+    	List<String> roles = null;        
+        switch (deviceTypeHeader) {
+			case "WEB":
+				roles = user.getAuthorities()
+				            .stream()
+				            .map(GrantedAuthority::getAuthority)
+				            .map(authority -> authority.replace("|WEB", ""))
+				            .collect(Collectors.toList());
+				break;
+			case "MOBILE":
+				roles = user.getAuthorities()
+						    .stream()
+						    .map(GrantedAuthority::getAuthority)
+						    .map(authority -> authority.replace("|MOBILE", ""))
+						    .collect(Collectors.toList());
+						break;
+			default:
+				throw new RuntimeException("deviceTypeHeader undefined");
+		}        
+        
         var systemSecurityConfiguration = userService.loadJwtConfigs(); // cache it in memory level later
         var token = Jwts.builder()
                         .signWith(Keys.hmacShaKeyFor(systemSecurityConfiguration.getJwtSecret().getBytes()))
@@ -79,8 +90,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException authenticationException)
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
+    		AuthenticationException authenticationException)
                         throws IOException {
     	authenticationResponseHandler.refuseRequest(response, HttpStatus.UNAUTHORIZED.value(), "Invalid credentials");
     }
+    
 }

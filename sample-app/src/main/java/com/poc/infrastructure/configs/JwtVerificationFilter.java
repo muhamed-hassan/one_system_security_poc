@@ -1,7 +1,6 @@
 package com.poc.infrastructure.configs;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,29 +31,22 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		var systemSecurityConfiguration = userService.loadJwtConfigs(); // cache it in memory level later
 		var token = request.getHeader(Constants.AUTHORIZATION_HEADER_KEY);
-        if (token != null
-                && !token.isBlank()
-                && token.startsWith(Constants.AUTHORIZATION_HEADER_VALUE_PREFIX)) {
+        if (token != null && !token.isBlank() && token.startsWith(Constants.AUTHORIZATION_HEADER_VALUE_PREFIX)) {
             var parsedToken = Jwts.parserBuilder()
-                                                .setSigningKey(systemSecurityConfiguration.getJwtSecret().getBytes())
-                                                .build()
-                                                .parseClaimsJws(token.replace(Constants.AUTHORIZATION_HEADER_VALUE_PREFIX, ""));
+	                                .setSigningKey(systemSecurityConfiguration.getJwtSecret().getBytes())
+	                                .build()
+	                                .parseClaimsJws(token.replace(Constants.AUTHORIZATION_HEADER_VALUE_PREFIX, ""));
+            
             var username = parsedToken.getBody().getSubject();         
-            
-            var roles = ((String) parsedToken.getBody().get("rol")).split(",");
-            
-            
-            //var roles = (List<String>) parsedToken.getBody().get("rol");
-            
-            var authorities = Arrays.stream(roles)
-            		.map(SimpleGrantedAuthority::new)
-            		.collect(Collectors.toList());
+            var roles = (List<String>) parsedToken.getBody().get("rol");            
+            var authorities = roles.stream()
+				            		.map(SimpleGrantedAuthority::new)
+				            		.collect(Collectors.toList());
             
             if (username.isBlank() && authorities.isEmpty()) return;
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(username, null, authorities));
         }
         filterChain.doFilter(request, response);
-
 	}
 
 }
