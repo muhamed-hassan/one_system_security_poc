@@ -14,26 +14,12 @@ public class AuthenticationResponseHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(httpStatus);
         var writer = response.getWriter();
-        writer.write(new Error(message).toJson());
+        writer.write(formatErrorBody(message));
         writer.flush();
     }
 	
-	final class Error {
-
-	    private final String message;
-
-	    public Error(String message) {
-	        this.message = message;
-	    }
-
-	    public String getMessage() {
-	        return message;
-	    }
-
-	    public String toJson() {
-	        return new StringBuilder("{\"message").append("\":\"").append(message).append("\"}").toString();
-	    }
-
+	private String formatErrorBody(String message) {
+		return new StringBuilder("{\"message").append("\":\"").append(message).append("\"}").toString();
 	}
 	
 }

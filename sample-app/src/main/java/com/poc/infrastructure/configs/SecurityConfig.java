@@ -1,5 +1,7 @@
 package com.poc.infrastructure.configs;
 
+import static com.poc.infrastructure.configs.Constants.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -29,22 +31,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
+		var systemSecurityConfiguration = userService.loadJwtConfigs();
+		
         http.csrf().disable()
     		.httpBasic().disable()
     		.formLogin().disable()
     		.logout().disable()
             .authorizeRequests()
-            .antMatchers("/authenticate").permitAll()
+            .antMatchers(AUTHENTICATION_URI).permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .exceptionHandling()
             .authenticationEntryPoint((request, response, authenticationException) ->
-				authenticationResponseHandler.refuseRequest(response, HttpStatus.FORBIDDEN.value(), "Invalid authorization token"))
+				authenticationResponseHandler.refuseRequest(response, HttpStatus.FORBIDDEN.value(), INVALID_AUTHORIZATION_TOKEN))
             .and()
-            .addFilter(new JwtAuthenticationFilter(userService, authenticationManager(), authenticationResponseHandler))
-            .addFilterAfter(new JwtVerificationFilter(userService), JwtAuthenticationFilter.class);
+            .addFilter(new JwtAuthenticationFilter(systemSecurityConfiguration, authenticationManager(), authenticationResponseHandler))
+            .addFilterAfter(new JwtVerificationFilter(systemSecurityConfiguration), JwtAuthenticationFilter.class);
     }
 	
 	@Override

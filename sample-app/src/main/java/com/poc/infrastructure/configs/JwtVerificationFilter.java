@@ -1,5 +1,7 @@
 package com.poc.infrastructure.configs;
 
+import static com.poc.infrastructure.configs.Constants.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,31 +16,30 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.poc.domain.services.UserService;
+import com.poc.persistence.entities.SystemSecurityConfiguration;
 
 import io.jsonwebtoken.Jwts;
 
 public class JwtVerificationFilter extends OncePerRequestFilter {
+	
+	private final SystemSecurityConfiguration systemSecurityConfiguration;
 
-	private final UserService userService;
-
-    public JwtVerificationFilter(UserService userService) {
-        this.userService = userService;
+    public JwtVerificationFilter(SystemSecurityConfiguration systemSecurityConfiguration) {
+        this.systemSecurityConfiguration = systemSecurityConfiguration;
     }
     
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		var systemSecurityConfiguration = userService.loadJwtConfigs(); // cache it in memory level later
-		var token = request.getHeader(Constants.AUTHORIZATION_HEADER_KEY);
-        if (token != null && !token.isBlank() && token.startsWith(Constants.AUTHORIZATION_HEADER_VALUE_PREFIX)) {
+		var token = request.getHeader(AUTHORIZATION_HEADER_KEY);
+        if (token != null && !token.isBlank() && token.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
             var parsedToken = Jwts.parserBuilder()
 	                                .setSigningKey(systemSecurityConfiguration.getJwtSecret().getBytes())
 	                                .build()
-	                                .parseClaimsJws(token.replace(Constants.AUTHORIZATION_HEADER_VALUE_PREFIX, ""));
+	                                .parseClaimsJws(token.replace(AUTHORIZATION_HEADER_VALUE_PREFIX, ""));
             
             var username = parsedToken.getBody().getSubject();         
-            var roles = (List<String>) parsedToken.getBody().get("rol");            
+            var roles = (List<String>) parsedToken.getBody().get(JWT_PAYLOAD_CLAIM);            
             var authorities = roles.stream()
 				            		.map(SimpleGrantedAuthority::new)
 				            		.collect(Collectors.toList());

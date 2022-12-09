@@ -1,5 +1,7 @@
 package com.poc.infrastructure.configs;
 
+import static com.poc.infrastructure.configs.Constants.*;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.poc.domain.services.UserService;
+import com.poc.persistence.entities.SystemSecurityConfiguration;
 import com.poc.persistence.entities.User;
 
 import io.jsonwebtoken.Jwts;
@@ -26,21 +28,21 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private final UserService userService;
+	private final SystemSecurityConfiguration systemSecurityConfiguration;
 	
 	private final AuthenticationManager authenticationManager;
 	
-	private final AuthenticationResponseHandler authenticationResponseHandler;
+	private final AuthenticationResponseHandler authenticationResponseHandler;	
 	
 	@Value("${spring.application.name}")
     private String apiName;
 	    
-    public JwtAuthenticationFilter(UserService userService, AuthenticationManager authenticationManager, 
+    public JwtAuthenticationFilter(SystemSecurityConfiguration systemSecurityConfiguration, AuthenticationManager authenticationManager, 
     		AuthenticationResponseHandler authenticationResponseHandler) {
-        this.userService = userService;
+        this.systemSecurityConfiguration = systemSecurityConfiguration;
     	this.authenticationManager = authenticationManager;
     	this.authenticationResponseHandler = authenticationResponseHandler;
-        setFilterProcessesUrl("/authenticate");
+        setFilterProcessesUrl(AUTHENTICATION_URI);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
     		FilterChain filterChain, Authentication authentication) {
-    	var deviceTypeHeader = request.getHeader("Device-Type");    	
+    	var deviceTypeHeader = request.getHeader(DEVICE_TYPE_HEADER_KEY);    	
     	if (deviceTypeHeader == null) throw new RuntimeException("deviceTypeHeader undefined");
     	
     	var user = (User) authentication.getPrincipal();
@@ -76,17 +78,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			default:
 				throw new RuntimeException("deviceTypeHeader undefined");
 		}        
-        
-        var systemSecurityConfiguration = userService.loadJwtConfigs(); // cache it in memory level later
+               
         var token = Jwts.builder()
                         .signWith(Keys.hmacShaKeyFor(systemSecurityConfiguration.getJwtSecret().getBytes()))
-                        .setHeaderParam("typ", "jwt")
+                        .setHeaderParam(JWT_HEADER_TYPE, "jwt")
                         .setIssuer(apiName)
                         .setSubject(user.getUsername())
                         .setExpiration(new Date(System.currentTimeMillis() + systemSecurityConfiguration.getJwtExpiration()))
-                        .claim("rol", roles)
+                        .claim(JWT_PAYLOAD_CLAIM, roles)
                         .compact();
-        response.addHeader(Constants.AUTHORIZATION_HEADER_KEY, Constants.AUTHORIZATION_HEADER_VALUE_PREFIX + token);
+        response.addHeader(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE_PREFIX + token);
     }
 
     @Override
