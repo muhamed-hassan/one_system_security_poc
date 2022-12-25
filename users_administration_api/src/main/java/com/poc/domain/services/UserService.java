@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.poc.persistence.entities.SystemActor;
 import com.poc.persistence.entities.User;
 import com.poc.persistence.repositories.SystemActorRepository;
 import com.poc.persistence.repositories.UserRepository;
@@ -22,10 +23,13 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	public void register(NewUser newUser) {
-		var systemActor = systemActorRepository.findById(newUser.getSystemActorId())
-												.orElseThrow(() -> new RuntimeException("Invalid systemActorId"));
 		
-		var user = new User();
+		SystemActor systemActor = systemActorRepository.getOne(newUser.getSystemActorId());
+		if (systemActor == null) {
+			throw new RuntimeException("Invalid systemActorId");
+		}
+		
+		User user = new User();
 		user.setUsername(newUser.getUsername());
 		user.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		user.setName(newUser.getName());
