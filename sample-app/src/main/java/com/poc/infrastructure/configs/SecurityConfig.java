@@ -1,20 +1,21 @@
 package com.poc.infrastructure.configs;
 
-import static com.poc.infrastructure.configs.Constants.*;
+import static com.poc.infrastructure.configs.Constants.AUTHENTICATION_URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.poc.domain.services.UserService;
+import com.poc.persistence.entities.SystemSecurityConfiguration;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
@@ -31,24 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-		var systemSecurityConfiguration = userService.loadJwtConfigs();
+		
+		SystemSecurityConfiguration systemSecurityConfiguration = userService.loadJwtConfigs();
 		
         http.csrf().disable()
-    		.httpBasic().disable()
-    		.formLogin().disable()
-    		.logout().disable()
-            .authorizeRequests()
+    		.authorizeRequests()
             .antMatchers(AUTHENTICATION_URI).permitAll()
             .anyRequest().authenticated()
             .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint((request, response, authenticationException) ->
-				authenticationResponseHandler.refuseRequest(response, HttpStatus.FORBIDDEN.value(), INVALID_AUTHORIZATION_TOKEN))
-            .and()
             .addFilter(new JwtAuthenticationFilter(systemSecurityConfiguration, authenticationManager(), authenticationResponseHandler))
-            .addFilterAfter(new JwtVerificationFilter(systemSecurityConfiguration), JwtAuthenticationFilter.class);
+            .addFilterAfter(new JwtAuthorizationFilter(systemSecurityConfiguration), JwtAuthenticationFilter.class);
     }
 	
 	@Override

@@ -20,14 +20,24 @@ public class UserService implements UserDetailsService {
 	private SystemSecurityConfigurationRepository systemSecurityConfigurationRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {		
-		return userRepository.findByUsername(username)
-	            .orElseThrow(() -> new UsernameNotFoundException("This user name " + username + " does not exist"));
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {	
+		
+		UserDetails user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("This user name " + username + " does not exist");
+		}
+		
+		return user;
 	}
 	
 	public SystemSecurityConfiguration loadJwtConfigs() {
-		return systemSecurityConfigurationRepository.findById(1)
-				.orElseThrow(() -> new RuntimeException("Failed to load Jwt Configs, please contact the System Admin"));
+		
+		SystemSecurityConfiguration configuration = systemSecurityConfigurationRepository.findOne(1);
+		if (configuration == null) {
+			throw new RuntimeException("Failed to load Jwt Configs => please contact the System Admin");
+		}
+		
+		return configuration;
 	}
 
 }
