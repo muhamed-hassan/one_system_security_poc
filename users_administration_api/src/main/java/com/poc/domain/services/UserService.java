@@ -24,7 +24,7 @@ public class UserService {
 
 	public void register(NewUser newUser) {
 		
-		SystemActor systemActor = systemActorRepository.getOne(newUser.getSystemActorId());
+		SystemActor systemActor = systemActorRepository.findOne(newUser.getSystemActorId());
 		if (systemActor == null) {
 			throw new RuntimeException("Invalid systemActorId");
 		}
