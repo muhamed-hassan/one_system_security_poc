@@ -37,9 +37,9 @@ public class UserController {
 	}
 	
 	/* ******************************************************************************************************** */
-	/* ******************************************************************************************************** */
-	
+	/* ******************************************************************************************************** */	
 	// https://en.wikipedia.org/wiki/Fail-fast approach is used to report validation errors
+	
 	private String validate(NewUser newUser) {
 		
 		String username = newUser.getUsername();
