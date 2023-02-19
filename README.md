@@ -5,7 +5,7 @@
 
 **`Ancient wisdom for kids:`** 
 
-System is secured by design AKA wise 🧠 planning ✅ 💯 📝, so don't let [ignorants fagots 🤡 🎠 😼](https://en.wikipedia.org/wiki/Joker_(character)) do that. Just educate 📚 yourself well and keep practice as a habit. Close the door 🚪 💯 well behind you 😇.
+System is [secured](https://en.wikipedia.org/wiki/Security) 🛡 by design AKA wise 🧠 planning ✅ 💯 📝, so don't let [ignorants fagots 🤡 🎠 😼](https://en.wikipedia.org/wiki/Joker_(character)) do that. Just educate 📚 yourself well and keep practice as a habit. Close the door 🚪 💯 well behind you 😇.
 
 ***
 
