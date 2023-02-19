@@ -3,6 +3,12 @@
 ***
 ***
 
+**`Ancient wisdom for kids:`** 
+
+System is secured by design AKA wise planning, so don't let ignorants fagots do that. Just educate yourself well and keep practice as a habit. Close the door well behind you.
+
+***
+
 ![368bef0098e438c8be080aac734d2f24](https://user-images.githubusercontent.com/17825804/219565622-ee524d61-25f5-41d7-85ef-884f7680e8f0.jpg)
 
 ***
