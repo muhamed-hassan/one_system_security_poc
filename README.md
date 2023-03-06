@@ -7,6 +7,8 @@
 
 System is [secured](https://en.wikipedia.org/wiki/Security) 🛡 by design AKA wise 🧠 planning ✅ 💯 📝, so don't let [ignorants fagots 🤡 🎠 😼](https://en.wikipedia.org/wiki/Joker_(character)) do that. Just educate 📚 yourself well and keep practice as a habit. Close the [door 🚪](https://en.wikipedia.org/wiki/Gate) 💯 well behind you 😇.
 
+`Hackers 🎠` have no existence in real world. It's just a myth as dragons 🐲. Consider it as movies regrading crazy 🤡 people who have no ability to prove the [security 🛡](https://en.wikipedia.org/wiki/Security) in real life scenarios. They're living in a fantasy world 🤣 where they can't close the bathroom door 🚪 while they're doing their shit 💩.
+
 ***
 
 ![368bef0098e438c8be080aac734d2f24](https://user-images.githubusercontent.com/17825804/219565622-ee524d61-25f5-41d7-85ef-884f7680e8f0.jpg)
