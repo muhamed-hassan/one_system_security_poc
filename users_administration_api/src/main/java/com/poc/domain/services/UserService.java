@@ -30,7 +30,10 @@ public class UserService {
 		}
 		
 		User user = new User();
-		user.setUsername(newUser.getUsername());
+				
+		String userName = (newUser.getName().replaceAll("\\ ", "_")).toLowerCase();
+		long countOfExistedUsernames = userRepository.getCountOfUsername(userName);
+		user.setUsername(userName + "_" + (countOfExistedUsernames + 1));		
 		user.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		user.setName(newUser.getName());
 		user.setEmail(newUser.getEmail());
