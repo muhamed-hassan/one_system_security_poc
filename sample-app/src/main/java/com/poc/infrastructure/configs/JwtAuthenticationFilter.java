@@ -59,6 +59,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
+    /*
+     * extracting the required screens to be displayed to the user who is about to login based
+     * on "Device-Type" request-header whether it is WEB or MOBILE
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
     		FilterChain filterChain, Authentication authentication) {
@@ -71,6 +75,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     	Iterator<? extends GrantedAuthority> iterator = authorities.iterator();	
     	List<String> roles = new ArrayList<String>();        
         switch (deviceTypeHeader) {
+        	// Collecting WEB screens
 			case "WEB":				
 				while (iterator.hasNext()) {					
 					GrantedAuthority currentElement = iterator.next();					
@@ -78,6 +83,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 					roles.add(role);
 				}				
 				break;
+			// Collecting MOBILE screens
 			case "MOBILE":				
 				while (iterator.hasNext()) {					
 					GrantedAuthority currentElement = iterator.next();					
