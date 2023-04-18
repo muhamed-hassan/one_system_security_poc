@@ -3,6 +3,7 @@ package com.poc.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.poc.persistence.entities.SystemActor;
 import com.poc.persistence.entities.User;
@@ -22,6 +23,7 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Transactional	
 	public void register(NewUser newUser) {
 		
 		SystemActor systemActor = systemActorRepository.findOne(newUser.getSystemActorId());
