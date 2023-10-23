@@ -1,7 +1,4 @@
-package com.poc.interfaces.rest.controllers;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.poc.web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poc.domain.services.UserService;
-import com.poc.interfaces.rest.models.NewUser;
+import com.poc.domain.UserService;
+import com.poc.web.models.NewUser;
 
 @RestController
 @RequestMapping("v1/users")
@@ -27,12 +24,7 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Object> register(@RequestBody NewUser newUser) {
 		
-		String errorMessage = validator.validate(newUser);
-		if (errorMessage != null) {			
-			Map<String, String> error = new HashMap<String, String>(1);
-			error.put("error", errorMessage);			
-			return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
-		}
+		validator.validate(newUser);
 		
 		userService.register(newUser);		
 				

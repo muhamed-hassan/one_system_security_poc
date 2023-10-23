@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.poc.domain.services.UserService;
+import com.poc.domain.UserService;
 import com.poc.persistence.entities.SystemSecurityConfiguration;
 
 @Configuration

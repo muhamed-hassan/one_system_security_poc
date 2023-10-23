@@ -1,4 +1,4 @@
-package com.poc.domain.services;
+package com.poc.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +9,7 @@ import com.poc.persistence.entities.SystemActor;
 import com.poc.persistence.entities.User;
 import com.poc.persistence.repositories.SystemActorRepository;
 import com.poc.persistence.repositories.UserRepository;
-import com.poc.interfaces.rest.models.NewUser;
+import com.poc.web.models.NewUser;
 
 @Service
 public class UserService {
@@ -28,7 +28,7 @@ public class UserService {
 		
 		SystemActor systemActor = systemActorRepository.findOne(newUser.getSystemActorId());
 		if (systemActor == null) {
-			throw new RuntimeException("Invalid systemActorId");
+			throw new IllegalArgumentException("Invalid systemActorId");
 		}
 		
 		User user = new User();

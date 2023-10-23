@@ -1,4 +1,4 @@
-package com.poc.domain.services;
+package com.poc.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -18,7 +18,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,10 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private final AuthenticationManager authenticationManager;
 	
 	private final AuthenticationResponseHandler authenticationResponseHandler;	
-	
-	@Value("${spring.application.name}")
-    private String apiName;
-	    
+		    
     public JwtAuthenticationFilter(SystemSecurityConfiguration systemSecurityConfiguration, AuthenticationManager authenticationManager, 
     		AuthenticationResponseHandler authenticationResponseHandler) {
         this.systemSecurityConfiguration = systemSecurityConfiguration;
@@ -98,7 +94,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = Jwts.builder()
                         .signWith(Keys.hmacShaKeyFor(systemSecurityConfiguration.getJwtSecret().getBytes()))
                         .setHeaderParam(JWT_HEADER_TYPE, "jwt")
-                        .setIssuer(apiName)
+                        .setIssuer("sample-app")
                         .setSubject(user.getUsername())
                         .setExpiration(new Date(System.currentTimeMillis() + systemSecurityConfiguration.getJwtExpiration()))
                         .claim(JWT_PAYLOAD_CLAIM, roles)
