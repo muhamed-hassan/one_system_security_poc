@@ -1,7 +1,5 @@
 package com.poc.infrastructure.configs;
 
-import static com.poc.infrastructure.configs.Constants.AUTHENTICATION_URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,13 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		SystemSecurityConfiguration systemSecurityConfiguration = userService.loadJwtConfigs();
 		
-        http.csrf().disable()
-    		.authorizeRequests()
-            .antMatchers(AUTHENTICATION_URI).permitAll()
-            .anyRequest().authenticated()
+        http.csrf().disable().authorizeRequests()
+            .antMatchers(systemSecurityConfiguration.getAuthenticationPath()).permitAll()
             .and()
             .addFilter(new JwtAuthenticationFilter(systemSecurityConfiguration, authenticationManager(), authenticationResponseHandler))
-            .addFilterAfter(new JwtAuthorizationFilter(systemSecurityConfiguration), JwtAuthenticationFilter.class);
+            .exceptionHandling();
     }
 	
 	@Override

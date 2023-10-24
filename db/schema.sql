@@ -33,10 +33,11 @@ CREATE TABLE `system_security_configuration` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `jwt_secret` varchar(250) NOT NULL,
   `jwt_expiration` int unsigned NOT NULL,
+  `authentication_path` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `system_security_configuration` (`jwt_secret`, `jwt_expiration`) VALUES ('QiiKLh_g0-CmQlx-foyJ0HA_Qnqk5hB5deXTiFCnLzs3NLSwjGzazVOiWEZvB3sCxyQiR2IQJcl5PAqfxzzF-69E18tozdtDXVKChEqT4gTIv66WGKGrfR_anOayiKoZ139CZ_RL0mv9bYYE18J0EdttknsNTR9s7ONc4DNs8Nc', 86400000);
+INSERT INTO `system_security_configuration` (`jwt_secret`, `jwt_expiration`, `authentication_path`) VALUES ('QiiKLh_g0-CmQlx-foyJ0HA_Qnqk5hB5deXTiFCnLzs3NLSwjGzazVOiWEZvB3sCxyQiR2IQJcl5PAqfxzzF-69E18tozdtDXVKChEqT4gTIv66WGKGrfR_anOayiKoZ139CZ_RL0mv9bYYE18J0EdttknsNTR9s7ONc4DNs8Nc', 86400000, '/authenticate');
 
 /* ********************************************************************************************************* */
 
