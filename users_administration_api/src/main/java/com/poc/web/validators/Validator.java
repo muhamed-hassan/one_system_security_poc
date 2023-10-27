@@ -1,4 +1,4 @@
-package com.poc.web.controllers;
+package com.poc.web.validators;
 
 import org.springframework.stereotype.Component;
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poc.domain.UserService;
 import com.poc.web.models.NewUser;
+import com.poc.web.validators.Validator;
 
 @RestController
 @RequestMapping("v1/users")
