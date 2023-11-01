@@ -14,8 +14,6 @@ CREATE TABLE `screen_type` (
   UNIQUE KEY `screen_type_type_UQ` (`type`)
 );
 
-INSERT INTO `screen_type` (`type`) VALUES ('WEB'), ('MOBILE');
-
 /* ********************************************************************************************************* */
 
 CREATE TABLE `system_actor` (
@@ -24,8 +22,6 @@ CREATE TABLE `system_actor` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `system_actor_type_UQ` (`type`)
 );
-
-INSERT INTO `system_actor` (`type`) VALUES ('user_a'), ('user_b');
 
 /* ********************************************************************************************************* */
 
@@ -37,8 +33,6 @@ CREATE TABLE `system_security_configuration` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `system_security_configuration` (`jwt_secret`, `jwt_expiration`, `authentication_path`) VALUES ('QiiKLh_g0-CmQlx-foyJ0HA_Qnqk5hB5deXTiFCnLzs3NLSwjGzazVOiWEZvB3sCxyQiR2IQJcl5PAqfxzzF-69E18tozdtDXVKChEqT4gTIv66WGKGrfR_anOayiKoZ139CZ_RL0mv9bYYE18J0EdttknsNTR9s7ONc4DNs8Nc', 86400000, '/authenticate');
-
 /* ********************************************************************************************************* */
 
 CREATE TABLE `ui_screen` (
@@ -48,8 +42,6 @@ CREATE TABLE `ui_screen` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`screen_type_id`) REFERENCES `screen_type` (`id`)
 );
-
-INSERT INTO `ui_screen` (`screen_name`, `screen_type_id`) VALUES ('screen_name_x1', 1), ('screen_name_x2', 1), ('screen_name_x3', 1), ('screen_name_x4', 2), ('screen_name_x5', 2), ('screen_name_x6', 2);
 
 /* ********************************************************************************************************* */
 
@@ -82,5 +74,3 @@ CREATE TABLE `granted_authority` (
   FOREIGN KEY (`system_actor_id`) REFERENCES `system_actor` (`id`),
   FOREIGN KEY (`ui_screen_id`) REFERENCES `ui_screen` (`id`)
 );
-
-INSERT INTO `granted_authority` (`system_actor_id`, `ui_screen_id`) VALUES (1, 1), (1, 2), (1, 3), (2, 4), (2, 5), (2, 6);
