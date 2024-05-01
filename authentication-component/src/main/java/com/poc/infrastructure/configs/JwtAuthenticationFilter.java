@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.infrastructure.models.Credentials;
+import com.poc.persistence.entities.CustomGrantedAuthority;
 import com.poc.persistence.entities.SystemSecurityConfiguration;
 import com.poc.persistence.entities.User;
 
@@ -79,22 +80,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     	User user = (User) authentication.getPrincipal();
     	Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
     	Iterator<? extends GrantedAuthority> iterator = authorities.iterator();	
-    	List<String> roles = new ArrayList<String>();        
+    	List<String> roles = new ArrayList<String>();        	
         switch (deviceTypeHeader) {
         	// Collecting WEB screens
 			case "WEB":				
 				while (iterator.hasNext()) {					
-					GrantedAuthority currentElement = iterator.next();					
-					String role = currentElement.getAuthority().replace("|WEB", "");					
-					roles.add(role);
+					CustomGrantedAuthority currentElement = (CustomGrantedAuthority) iterator.next();		
+					if (currentElement.getUiScreen().getScreenType().getType().equals("WEB")) {
+						String role = currentElement.getAuthority().replace("|WEB", "");					
+						roles.add(role);
+					}					
 				}				
 				break;
 			// Collecting MOBILE screens
 			case "MOBILE":				
 				while (iterator.hasNext()) {					
-					GrantedAuthority currentElement = iterator.next();					
-					String role = currentElement.getAuthority().replace("|MOBILE", "");					
-					roles.add(role);
+					CustomGrantedAuthority currentElement = (CustomGrantedAuthority) iterator.next();					
+					if (currentElement.getUiScreen().getScreenType().getType().equals("MOBILE")) {
+						String role = currentElement.getAuthority().replace("|MOBILE", "");					
+						roles.add(role);
+					}
 				}	
 				break;
 			default:
