@@ -111,6 +111,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .setHeaderParam("typ", "jwt")
                         .setIssuer("authentication-component")
                         .setSubject(user.getUsername())
+                        .setIssuedAt(new Date())
                         .setExpiration(new Date(System.currentTimeMillis() + systemSecurityConfiguration.getJwtExpiration()))
                         .claim("rol", roles)
                         .compact();
