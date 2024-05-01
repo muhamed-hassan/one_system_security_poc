@@ -1,6 +1,7 @@
 package com.poc.infrastructure.configs;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +20,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poc.infrastructure.models.Credentials;
 import com.poc.persistence.entities.SystemSecurityConfiguration;
 import com.poc.persistence.entities.User;
 
@@ -43,13 +46,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    	
+    	String username = null;
+        String password = null; 
+    	try {
+    		
+    		InputStream inputStream = request.getInputStream();
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
+			Credentials credentials = mapper.readValue(inputStream, Credentials.class);			
+			username = credentials.getUsername();
+			password = credentials.getPassword();			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
     /*
-     * extracting the required screens to be displayed to the user who is about to login based
+     * Extracting the required screens (user's privileges) to be displayed to the user who is about to login based
      * on "Device-Type" request-header whether it is WEB or MOBILE
      */
     @Override
