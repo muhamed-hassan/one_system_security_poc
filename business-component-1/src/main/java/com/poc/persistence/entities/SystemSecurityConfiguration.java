@@ -23,6 +23,9 @@ public class SystemSecurityConfiguration {
 	
 	@Column(name = "authentication_path")
 	private String authenticationPath;
+	
+	@Column(name = "automated_system_name")
+	private String automatedSystemName;
 
 	public int getId() {
 		return id;
@@ -55,5 +58,13 @@ public class SystemSecurityConfiguration {
 	public void setAuthenticationPath(String authenticationPath) {
 		this.authenticationPath = authenticationPath;
 	}	
+	
+	public String getAutomatedSystemName() {
+		return automatedSystemName;
+	}
+
+	public void setAutomatedSystemName(String automatedSystemName) {
+		this.automatedSystemName = automatedSystemName;
+	}
 	
 }

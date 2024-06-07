@@ -30,6 +30,7 @@ CREATE TABLE `system_security_configuration` (
   `jwt_secret` varchar(250) NOT NULL,
   `jwt_expiration` int unsigned NOT NULL,
   `authentication_path` varchar(100) NOT NULL,
+  `automated_system_name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 );
 

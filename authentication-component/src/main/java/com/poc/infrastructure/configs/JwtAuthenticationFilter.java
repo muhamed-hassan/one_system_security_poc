@@ -109,7 +109,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = Jwts.builder()
                         .signWith(Keys.hmacShaKeyFor(systemSecurityConfiguration.getJwtSecret().getBytes()))
                         .setHeaderParam("typ", "jwt")
-                        .setIssuer("authentication-component")
+                        .setIssuer(systemSecurityConfiguration.getAutomatedSystemName())
                         .setSubject(user.getUsername())
                         .setIssuedAt(new Date())
                         .setExpiration(new Date(System.currentTimeMillis() + systemSecurityConfiguration.getJwtExpiration()))
