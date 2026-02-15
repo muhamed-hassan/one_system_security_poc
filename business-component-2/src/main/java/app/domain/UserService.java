@@ -30,13 +30,9 @@ public class UserService implements UserDetailsService {
 	
 	public SystemSecurityConfiguration getSystemSecurityConfiguration() {
 		
-		SystemSecurityConfiguration configuration = systemSecurityConfigurationRepository.findById(1);
+		SystemSecurityConfiguration systemSecurityConfiguration = systemSecurityConfigurationRepository.findById(1);
 		
-		if (configuration == null) {
-			throw new RuntimeException("Failed to load system-security-configuration");
-		}
-		
-		return configuration;
+		return systemSecurityConfiguration;
 	}
 
 }
