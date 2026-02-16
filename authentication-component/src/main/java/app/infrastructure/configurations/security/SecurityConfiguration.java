@@ -36,10 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		SystemSecurityConfiguration systemSecurityConfiguration = userService.getSystemSecurityConfiguration();
 		
+		JwtAuthenticationFilter jwtAuthenticationFilter = 
+				new JwtAuthenticationFilter(systemSecurityConfiguration, authenticationManager(), authenticationResponseHandler);
+		
         http.csrf().disable().authorizeRequests()
             .antMatchers(systemSecurityConfiguration.getAuthenticationPath()).permitAll()
             .and()
-            .addFilter(new JwtAuthenticationFilter(systemSecurityConfiguration, authenticationManager(), authenticationResponseHandler))
+            .addFilter(jwtAuthenticationFilter)
             .exceptionHandling();
     }
 	

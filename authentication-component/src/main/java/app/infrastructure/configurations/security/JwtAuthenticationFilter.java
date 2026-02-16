@@ -29,11 +29,11 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	private final SystemSecurityConfiguration systemSecurityConfiguration;
+	private SystemSecurityConfiguration systemSecurityConfiguration;
 	
-	private final AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 	
-	private final AuthenticationResponseHandler authenticationResponseHandler;
+	private AuthenticationResponseHandler authenticationResponseHandler;
 		    
     public JwtAuthenticationFilter(SystemSecurityConfiguration systemSecurityConfiguration, AuthenticationManager authenticationManager, 
     		AuthenticationResponseHandler authenticationResponseHandler) {
@@ -57,6 +57,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			Credentials credentials = mapper.readValue(inputStream, Credentials.class);			
 			username = credentials.getUsername();
 			password = credentials.getPassword();			
+			
+			// TODO validate username and password
 			
 		} catch (IOException e) {
 			e.printStackTrace();
