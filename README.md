@@ -1,4 +1,4 @@
-#### Please visit the [wiki](https://github.com/muhamed-hassan/one_system_security_poc/wiki) for more info
+#### Please visit the [wiki](https://github.com/muhamed-hassan/one_system_security/wiki) for more info
 
 ***
 
