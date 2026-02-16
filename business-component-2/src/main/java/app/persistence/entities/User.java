@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,9 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "system_actor_id")
     private SystemActor systemActor;
+    
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
 
 	public int getId() {
 		return id;
@@ -54,6 +58,7 @@ public class User implements UserDetails {
 		this.id = id;
 	}
 
+	@Override
 	public String getUsername() {
 		return username;
 	}
@@ -62,6 +67,7 @@ public class User implements UserDetails {
 		this.username = username;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -94,6 +100,7 @@ public class User implements UserDetails {
 		this.email = email;
 	}
 
+	@Override
 	public boolean isAccountNonExpired() {
 		return accountNonExpired;
 	}
@@ -102,6 +109,7 @@ public class User implements UserDetails {
 		this.accountNonExpired = accountNonExpired;
 	}
 
+	@Override
 	public boolean isAccountNonLocked() {
 		return accountNonLocked;
 	}
@@ -110,6 +118,7 @@ public class User implements UserDetails {
 		this.accountNonLocked = accountNonLocked;
 	}
 
+	@Override
 	public boolean isCredentialsNonExpired() {
 		return credentialsNonExpired;
 	}
@@ -118,6 +127,7 @@ public class User implements UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -136,7 +146,11 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {		
-		return systemActor.getAuthorities();
+		return authorities;
+	}	
+	
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
 	}	
 	
 	@Override
