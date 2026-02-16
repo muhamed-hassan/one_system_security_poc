@@ -1,5 +1,7 @@
 package app.persistence.repositories;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,17 @@ public class SystemActorRepository extends BaseRepository {
 		}
 	
 		return systemActor;
+	}
+	
+	public List<SystemActor> findAll() {
+		
+		String query = "SELECT systemActor " + 
+					   "FROM   SystemActor systemActor";
+
+		List<SystemActor> systemActors = entityManager.createQuery(query, SystemActor.class)
+														.getResultList();
+	
+		return systemActors;
 	}
 	
 }

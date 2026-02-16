@@ -12,9 +12,9 @@ public class UserTransformer {
 		
 		User user = new User();		
 		user.setName(newUserModel.getName());
-		user.setEmail(newUserModel.getEmail());
-		user.setMobile(newUserModel.getMobile());
 		user.setPassword(newUserModel.getPassword());
+		user.setEmail(newUserModel.getEmail());
+		user.setMobile(newUserModel.getMobile());		
 		
 		return user;
 	}
