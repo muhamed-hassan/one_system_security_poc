@@ -56,9 +56,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			
 			Credentials credentials = mapper.readValue(inputStream, Credentials.class);			
 			username = credentials.getUsername();
-			password = credentials.getPassword();			
-			
-			// TODO validate username and password
+			password = credentials.getPassword();	
 			
 		} catch (IOException e) {
 			e.printStackTrace();
