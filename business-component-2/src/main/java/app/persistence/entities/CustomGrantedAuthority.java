@@ -54,7 +54,7 @@ public class CustomGrantedAuthority implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {		
-		return uiScreen.getScreenName() + "|" + uiScreen.getScreenType().getType();
+		return uiScreen.getScreenName();
 	}
 
 	@Override

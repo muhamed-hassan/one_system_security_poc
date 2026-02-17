@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Table(name = "ui_screen")
@@ -22,10 +20,6 @@ public class UiScreen {
 	@Column(name = "screen_name")
 	private String screenName;
 	
-	@ManyToOne
-    @JoinColumn(name = "screen_type_id")
-	private ScreenType screenType;
-
 	public int getId() {
 		return id;
 	}
@@ -41,14 +35,6 @@ public class UiScreen {
 	public void setScreenName(String screenName) {
 		this.screenName = screenName;
 	}
-
-	public ScreenType getScreenType() {
-		return screenType;
-	}
-
-	public void setScreenType(ScreenType screenType) {
-		this.screenType = screenType;
-	}	
 	
 	@Override
 	public int hashCode() {

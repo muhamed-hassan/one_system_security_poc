@@ -7,15 +7,6 @@ USE `system_security`;
 /* ********************************************************************************************************* */
 /* ********************************************************************************************************* */
 
-CREATE TABLE `screen_type` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `screen_type_type_UQ` (`type`)
-);
-
-/* ********************************************************************************************************* */
-
 CREATE TABLE `system_actor` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(50) NOT NULL,
@@ -39,9 +30,7 @@ CREATE TABLE `system_security_configuration` (
 CREATE TABLE `ui_screen` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `screen_name` varchar(100) NOT NULL,
-  `screen_type_id` int unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`screen_type_id`) REFERENCES `screen_type` (`id`)
+  PRIMARY KEY (`id`)
 );
 
 /* ********************************************************************************************************* */

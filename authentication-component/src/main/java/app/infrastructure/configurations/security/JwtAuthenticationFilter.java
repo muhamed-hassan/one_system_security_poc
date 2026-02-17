@@ -64,47 +64,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
-    /*
-     * Extracting the required screens (user's privileges) to be displayed to the user who is about to login based
-     * on "Device-Type" request-header whether it is WEB or MOBILE
-     */
+    // Extracting the required screens (user's privileges) to be displayed to the user who is about to login
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
     		FilterChain filterChain, Authentication authentication) {
     	
-    	String deviceTypeHeader = request.getHeader("Device-Type");    	
-    	if (deviceTypeHeader == null) {
-    		throw new RuntimeException("deviceTypeHeader undefined");
-    	}
-    	
     	User user = (User) authentication.getPrincipal();
     	Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
     	Iterator<? extends GrantedAuthority> iterator = authorities.iterator();	
-    	ArrayList<String> roles = new ArrayList<String>();        	
-        switch (deviceTypeHeader) {
-        	// Collecting WEB screens
-			case "WEB":				
-				while (iterator.hasNext()) {					
-					CustomGrantedAuthority currentElement = (CustomGrantedAuthority) iterator.next();		
-					if (currentElement.getUiScreen().getScreenType().getType().equals("WEB")) {
-						String role = currentElement.getAuthority().replace("|WEB", "");					
-						roles.add(role);
-					}					
-				}				
-				break;
-			// Collecting MOBILE screens
-			case "MOBILE":				
-				while (iterator.hasNext()) {					
-					CustomGrantedAuthority currentElement = (CustomGrantedAuthority) iterator.next();					
-					if (currentElement.getUiScreen().getScreenType().getType().equals("MOBILE")) {
-						String role = currentElement.getAuthority().replace("|MOBILE", "");					
-						roles.add(role);
-					}
-				}	
-				break;
-			default:
-				throw new RuntimeException("deviceTypeHeader undefined");
-		}        
+    	ArrayList<String> roles = new ArrayList<String>(); 
+    	while (iterator.hasNext()) {					
+			CustomGrantedAuthority currentElement = (CustomGrantedAuthority) iterator.next();		
+			String role = currentElement.getAuthority();					
+			roles.add(role);				
+		}	    
                
         String token = Jwts.builder()
                         .signWith(Keys.hmacShaKeyFor(systemSecurityConfiguration.getJwtSecret().getBytes()))
