@@ -5,6 +5,10 @@
 **`Difficulty Level`**: [Research and development center](https://en.wikipedia.org/wiki/Research_and_development) over the planet 🌏 🌎 🌍.
 
 ***
+
+#### [Jokes 🤣 in backend security realm.](https://github.com/muhamed-hassan/one_system_security/wiki/Jokes-in-backend-security-realm)
+
+***
 ***
 
 **`Ancient wisdom for kids:`** 
