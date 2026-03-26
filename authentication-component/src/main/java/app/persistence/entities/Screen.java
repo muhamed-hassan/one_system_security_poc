@@ -2,23 +2,19 @@ package app.persistence.entities;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Table(name = "ui_screen")
 @Entity
-public class UiScreen {
+public class Screen {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 	
-	@Column(name = "screen_name")
-	private String screenName;
+	private String name;
 
 	public int getId() {
 		return id;
@@ -28,12 +24,12 @@ public class UiScreen {
 		this.id = id;
 	}
 
-	public String getScreenName() {
-		return screenName;
+	public String getName() {
+		return name;
 	}
 
-	public void setScreenName(String screenName) {
-		this.screenName = screenName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@Override
@@ -52,7 +48,7 @@ public class UiScreen {
 		if (getClass() != object.getClass()) {
 			return false;
 		}
-		UiScreen other = (UiScreen) object;
+		Screen other = (Screen) object;
 		return id == other.getId();
 	}
 

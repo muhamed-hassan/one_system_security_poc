@@ -21,8 +21,8 @@ public class CustomGrantedAuthority implements GrantedAuthority {
     private int id;
 	
 	@ManyToOne
-    @JoinColumn(name = "ui_screen_id")
-	private UiScreen uiScreen;
+    @JoinColumn(name = "screen_id")
+	private Screen screen;
 	
 	@ManyToOne
     @JoinColumn(name = "system_actor_id")
@@ -36,12 +36,12 @@ public class CustomGrantedAuthority implements GrantedAuthority {
 		this.id = id;
 	}
 
-	public UiScreen getUiScreen() {
-		return uiScreen;
+	public Screen getScreen() {
+		return screen;
 	}
 
-	public void setUiScreen(UiScreen uiScreen) {
-		this.uiScreen = uiScreen;
+	public void setScreen(Screen screen) {
+		this.screen = screen;
 	}		
 
 	public SystemActor getSystemActor() {
@@ -54,7 +54,7 @@ public class CustomGrantedAuthority implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {		
-		return uiScreen.getScreenName();
+		return screen.getName();
 	}
 
 	@Override
