@@ -1,5 +1,4 @@
 
--- Run using MySQL command
 CREATE SCHEMA `system_security`;
 
 USE `system_security`;
